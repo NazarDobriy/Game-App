@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin: 32px;
+}
+
+.score, .timer {
+  margin: 0;
+}
+
+.board {
+  position: relative;
+  height: 600px;
+  width: 500px;
+  background: #eee;
+  border: 1px solid #ccc;
+}
+
+.player {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+  height: 20px;
+  background: blue;
+}
+
+.ball {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: red;
+}
