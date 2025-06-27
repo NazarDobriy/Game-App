@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {Subscription} from "rxjs";
 
 import {
   GameSettingsField,
@@ -16,9 +17,10 @@ import {integerValidator} from "@pages/game/validators/number.validator";
   styleUrl: './game-settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameSettingsComponent implements OnInit {
+export class GameSettingsComponent implements OnInit, OnDestroy {
   form: FormGroup<GameSettingsForm> | null = null;
   readonly fields: GameSettingsField[] = FIELDS;
+  private formSub = new Subscription();
   private readonly validators: ValidatorFn[] = [
     Validators.required,
     Validators.min(1),
@@ -35,31 +37,24 @@ export class GameSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form?.valueChanges.subscribe({
-      next: (value: Partial<GameSettingsFormValue>) => {
-        if (Object.values(value).some((item: number | null) => item === null)) {
-          this.gameService.restartGame();
-          return;
-        }
+    if (!!this.form) {
+      this.formSub = this.form.valueChanges.subscribe({
+        next: (value: Partial<GameSettingsFormValue>) => {
+          if (!!value.gameTime && !!value.playerSpeed && !!value.fallingSpeed && !!value.fallingFrequency) {
+            this.gameService.setSettings({
+              fallingFrequency: value.fallingFrequency,
+              fallingSpeed: value.fallingSpeed,
+              playerSpeed: value.playerSpeed,
+              gameTime: value.gameTime,
+            });
+          }
+        },
+      });
+    }
+  }
 
-        if (value.gameTime) {
-          this.gameService.restartGame();
-          this.gameService.setGameTime(value.gameTime);
-        }
-
-        if (value.playerSpeed) {
-          this.gameService.setPlayerSpeed(value.playerSpeed);
-        }
-
-        if (value.fallingSpeed) {
-          this.gameService.setFallingSpeed(value.fallingSpeed);
-        }
-
-        if (value.fallingFrequency) {
-          this.gameService.setFallingFrequency(value.fallingFrequency);
-        }
-      },
-    });
+  ngOnDestroy(): void {
+    this.formSub?.unsubscribe();
   }
 
 }

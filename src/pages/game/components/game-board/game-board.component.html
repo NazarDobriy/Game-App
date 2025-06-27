@@ -1,13 +1,13 @@
 <section class="container">
-  <h2 class="score">Timer: {{ time }} seconds left</h2>
+  <h2 class="score">Timer: {{ time() }} seconds left</h2>
 
   <section class="board">
-    <div class="player" [style.left.px]="playerX"></div>
+    <div class="player" [style.left.px]="playerX()"></div>
 
-    @for (ball of balls; track ball.id) {
+    @for (ball of balls(); track ball.id) {
       <div class="ball" [style.left.px]="ball.x" [style.top.px]="ball.y"></div>
     }
   </section>
 
-  <h2 class="timer">Score: {{ score }} caught balls</h2>
+  <h2 class="timer">Score: {{ score() }} caught balls</h2>
 </section>

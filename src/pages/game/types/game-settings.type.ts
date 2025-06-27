@@ -1,6 +1,6 @@
 import {FormControl} from "@angular/forms";
 
-type GameSettings = {
+export type GameSettings = {
   fallingSpeed: number;
   fallingFrequency: number;
   playerSpeed: number;
@@ -24,9 +24,4 @@ export type GameSettingsField = {
   name: keyof GameSettingsForm;
   label: string;
   placeholder: string;
-};
-
-export type PlayerMoveEvent = {
-  event: KeyboardEvent;
-  speed: number;
 };
