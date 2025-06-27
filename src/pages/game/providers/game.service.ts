@@ -120,13 +120,15 @@ export class GameService implements OnDestroy {
     return interval(fallingFrequency * 1000).pipe(
       takeUntil(this.gameStop$),
       tap(() => {
-        const newBall: Ball = {
-          id: this.ballId++,
-          x: Math.floor(Math.random() * (BOARD_WIDTH - BALL_WIDTH)),
-          y: 0,
-        };
-        const current = this.balls$.value;
-        this.balls$.next([...current, newBall]);
+        if (this.timer$.value !== 0) {
+          const newBall: Ball = {
+            id: this.ballId++,
+            x: Math.floor(Math.random() * (BOARD_WIDTH - BALL_WIDTH)),
+            y: 0,
+          };
+          const current = this.balls$.value;
+          this.balls$.next([...current, newBall]);
+        }
       })
     );
   }
