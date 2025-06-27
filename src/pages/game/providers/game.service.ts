@@ -179,10 +179,12 @@ export class GameService implements OnDestroy {
       throttleTime(GAME_TICK_INTERVAL),
     ).subscribe({
       next: (e: KeyboardEvent) => {
-        const current = this.playerX.value;
-        const speed = this.settings$.value?.playerSpeed || 1;
-        const newX = e.key === 'ArrowLeft' ? current - speed : current + speed;
-        this.playerX.next(Math.max(0, Math.min(newX, MAX_PLAYER_X)));
+        if (this.timer$.value !== 0) {
+          const current = this.playerX.value;
+          const speed = this.settings$.value?.playerSpeed || 1;
+          const newX = e.key === 'ArrowLeft' ? current - speed : current + speed;
+          this.playerX.next(Math.max(0, Math.min(newX, MAX_PLAYER_X)));
+        }
       },
     });
   }
