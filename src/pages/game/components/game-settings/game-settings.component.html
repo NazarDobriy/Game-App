@@ -1,4 +1,4 @@
-@if (!!form) {
+@if (form) {
   <form [formGroup]="form" class="form">
     @for (field of fields; track field.name) {
       <mat-form-field appearance="outline">

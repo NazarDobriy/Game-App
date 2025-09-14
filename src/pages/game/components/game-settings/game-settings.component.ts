@@ -37,7 +37,7 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (!!this.form) {
+    if (this.form) {
       this.formSub = this.form.valueChanges.subscribe({
         next: (value: Partial<GameSettingsFormValue>) => {
           if (!!value.gameTime && !!value.playerSpeed && !!value.fallingSpeed && !!value.fallingFrequency) {
